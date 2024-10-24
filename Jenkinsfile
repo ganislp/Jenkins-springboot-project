@@ -2,11 +2,19 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello') {
+        stage('Build') {
+         agent {
+                        docker {
+                           image  'maven:3.8.1-openjdk-17-slim'
+                           reuseNode true
+                        }
+                    }
             steps {
-                echo 'Hello World'
-                sh 'echo "Hello test"'
-                sh 'whoami'
+             sh '''
+               ls -la
+               mvn clean package -DskipTests
+               ls -la
+             '''
             }
         }
     }
